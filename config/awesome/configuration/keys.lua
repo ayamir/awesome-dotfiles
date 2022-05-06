@@ -27,16 +27,25 @@ shift = "Shift"
 awful.keyboard.append_global_keybindings({
 	awful.key({ modkey }, "Return", function()
 		awful.spawn(terminal)
-	end, { description = "open terminal", group = "launcher" }),
-	awful.key({ modkey, shift }, "f", function()
-		awful.spawn(file_manager)
-	end, { description = "open file manager", group = "launcher" }),
-	awful.key({ modkey, shift }, "w", function()
+	end, { description = "open kitty with fish", group = "launcher" }),
+	awful.key({ alt }, "Return", function()
+		awful.spawn("alacritty -e zsh")
+	end, { description = "open alacritty with z4h", group = "launcher" }),
+	awful.key({ modkey }, "e", function()
 		awful.spawn.with_shell(browser)
 	end, { description = "open web browser", group = "launcher" }),
-	awful.key({ modkey, shift }, "x", function()
-		awful.spawn.with_shell("xcolor-pick")
-	end, { description = "open color picker", group = "launcher" }),
+	awful.key({ modkey, shift }, "n", function()
+		awful.spawn(file_manager)
+	end, { description = "open file manager", group = "launcher" }),
+	awful.key({ modkey }, "d", function()
+		awful.spawn.with_shell("rofi -show run")
+	end, { description = "rofi -show run", group = "launcher" }),
+	awful.key({ modkey }, "r", function()
+		awful.spawn.with_shell("rofi -show drun")
+	end, { description = "rofi -show drun", group = "launcher" }),
+	awful.key({ modkey }, "w", function()
+		awful.spawn.with_shell("rofi -show window")
+	end, { description = "rofi -show drun", group = "launcher" }),
 })
 
 -- Client and Tabs Bindings
@@ -47,7 +56,7 @@ awful.keyboard.append_global_keybindings({
 	awful.key({ alt }, "s", function()
 		bling.module.tabbed.iter()
 	end, { description = "iterate through tabbing group", group = "tabs" }),
-	awful.key({ alt }, "d", function()
+	awful.key({ alt }, "e", function()
 		bling.module.tabbed.pop()
 	end, { description = "remove focused client from tabbing group", group = "tabs" }),
 	awful.key({ modkey }, "Down", function()
@@ -107,25 +116,37 @@ awful.keyboard.append_global_keybindings({
 	end, { description = "mute volume", group = "hotkeys" }),
 
 	-- Music
-	awful.key({}, "XF86AudioPlay", function()
+	awful.key({ alt, ctrl }, "p", function()
 		playerctl:play_pause()
 	end, { description = "toggle music", group = "hotkeys" }),
 
-	awful.key({}, "XF86AudioPrev", function()
+	awful.key({ alt, ctrl }, "Left", function()
 		playerctl:previous()
 	end, { description = "previous music", group = "hotkeys" }),
 
-	awful.key({}, "XF86AudioNext", function()
+	awful.key({ alt, ctrl }, "Right", function()
 		playerctl:next()
 	end, { description = "next music", group = "hotkeys" }),
 
+	awful.key({ modkey, ctrl }, "p", function()
+		awful.spawn("mpc toggle")
+	end, { description = "toggle mpd music", group = "hotkeys" }),
+
+	awful.key({ modkey, ctrl }, "Left", function()
+		awful.spawn("mpc prev")
+	end, { description = "prev mpd music", group = "hotkeys" }),
+
+	awful.key({ modkey, ctrl }, "Right", function()
+		awful.spawn("mpc next")
+	end, { description = "next mpd music", group = "hotkeys" }),
+
 	-- Screenshots
 	awful.key({}, "Print", function()
-		awful.spawn.with_shell("screensht full")
+		awful.spawn.with_shell("flameshot full")
 	end, { description = "take a full screenshot", group = "hotkeys" }),
 
-	awful.key({ alt }, "Print", function()
-		awful.spawn.with_shell("screensht area")
+	awful.key({ modkey, shift }, "s", function()
+		awful.spawn.with_shell("flameshot gui")
 	end, { description = "take a area screenshot", group = "hotkeys" }),
 
 	-- Lockscreen
@@ -147,6 +168,9 @@ awful.keyboard.append_global_keybindings({
 	awful.key({ modkey, shift }, "d", function()
 		central_panel:toggle()
 	end, { description = "toggle dashboard", group = "awesome" }),
+	awful.key({ modkey }, "b", function()
+		wibar_toggle()
+	end, { description = "toggle wibar", group = "awesome" }),
 	awful.key({ modkey, shift }, "t", function()
 		systray_toggle()
 	end, { description = "toggle systray", group = "awesome" }),
@@ -167,18 +191,18 @@ awful.keyboard.append_global_keybindings({
 
 awful.keyboard.append_global_keybindings({
 	-- Screen
-	awful.key({ modkey, "Control" }, "j", function()
+	awful.key({ modkey }, "h", function()
 		awful.screen.focus_relative(1)
 	end, { description = "focus the next screen", group = "screen" }),
-	awful.key({ modkey, "Control" }, "k", function()
+	awful.key({ modkey }, "l", function()
 		awful.screen.focus_relative(-1)
 	end, { description = "focus the previous screen", group = "screen" }),
 
 	-- Layout
-	awful.key({ modkey }, "l", function()
+	awful.key({ modkey }, "period", function()
 		awful.tag.incmwfact(0.05)
 	end, { description = "increase master width factor", group = "layout" }),
-	awful.key({ modkey }, "h", function()
+	awful.key({ modkey }, "comma", function()
 		awful.tag.incmwfact(-0.05)
 	end, { description = "decrease master width factor", group = "layout" }),
 	awful.key({ modkey, shift }, "h", function()
@@ -212,9 +236,10 @@ awful.keyboard.append_global_keybindings({
 	awful.key({ modkey }, "s", function()
 		awful.layout.set(awful.layout.suit.tile)
 	end, { description = "set tile layout", group = "tag" }),
-	awful.key({ modkey, shift }, "s", function()
+	awful.key({ modkey, ctrl }, "s", function()
 		awful.layout.set(awful.layout.suit.floating)
 	end, { description = "set floating layout", group = "tag" }),
+	awful.key({ modkey }, "Tab", awful.tag.history.restore, { description = "go back", group = "tag" }),
 
 	--Client
 	awful.key({ modkey, "Control" }, "n", function()
@@ -393,8 +418,8 @@ awful.mouse.append_global_mousebindings({
 	end),
 
 	-- Side key
-	awful.button({}, 4, awful.tag.viewprev),
-	awful.button({}, 5, awful.tag.viewnext),
+	-- awful.button({}, 4, awful.tag.viewprev),
+	-- awful.button({}, 5, awful.tag.viewnext),
 })
 
 -- Mouse buttons on the client

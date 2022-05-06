@@ -541,8 +541,8 @@ end
 -- Add the titlebar whenever a new music client is spawned
 ruled.client.connect_signal("request::rules", function()
 	ruled.client.append_rule({
-		id = "music",
-		rule = { instance = "music" },
+		id = "ncmpcpp",
+		rule = { instance = "ncmpcpp" },
 		callback = music_create_decoration,
 	})
 end)

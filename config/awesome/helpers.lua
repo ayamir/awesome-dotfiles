@@ -592,7 +592,7 @@ function helpers.prompt(action, textbox, prompt, callback)
 				if not input or #input == 0 then
 					return
 				end
-				awful.spawn.with_shell("noglob " .. web_search_cmd .. "'" .. input .. "'")
+				awful.spawn.with_shell(web_search_cmd .. "'" .. input .. "'")
 				naughty.notify({
 					title = "Searching the web for",
 					text = input,

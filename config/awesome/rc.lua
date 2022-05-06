@@ -14,20 +14,20 @@ themes = {
 	"day", -- [1] 🌕 Beautiful Light Colorscheme
 	"night", -- [2] 🌑 Aesthetic Dark Colorscheme
 }
-theme = themes[1]
+theme = themes[2]
 -- ============================================
 -- 🌊 Default Applications
-terminal = "alacritty"
+terminal = "kitty"
 editor = terminal .. " -e " .. os.getenv("EDITOR")
 vscode = "code"
 browser = "firefox"
-web_search_cmd = "xdg-open https://duckduckgo.com/?q="
+web_search_cmd = "xdg-open 'https://duckduckgo.com/?q='"
 file_manager = "nautilus"
-music_client = terminal .. " --class music -e ncmpcpp"
+music_client = terminal .. " --class ncmpcpp -e ncmpcpp"
 
 -- 🌏 Weather API
-openweathermap_key = "" -- API Key
-openweathermap_city_id = "" -- City ID
+openweathermap_key = "e1120372a5ca9ee20badff4e9a94e4fb" -- API Key
+openweathermap_city_id = "1812537" -- City ID
 weather_units = "metric"
 -- ============================================
 -- 📚 Library

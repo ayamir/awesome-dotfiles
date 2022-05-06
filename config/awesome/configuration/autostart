@@ -1,24 +1,27 @@
 #!/bin/sh
 
 start() {
-  if ! pgrep -f $1 ;
-  then
-    $@&
-  fi 
+	if ! pgrep -f $1; then
+		$@ &
+	fi
 }
+
+randr
 
 # music
 start mpd
 start mpDris2 # add playerctl support to mpd
 
 # compositor
-start picom --experimental-backends --config $HOME/.config/awesome/configuration/picom.conf
+start picom --experimental-backends --config $HOME/.config/picom/picom.conf
 
 # auth
 start /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+start xfce4-power-manager
 
 # load X colors
-start xrdb $HOME/.Xresources
+start xrdb "$HOME/.Xresources"
 
-# network manager
-start nm-applet
+if ! pgrep -f "fcitx5"; then
+	dex --autostart --environment awesome
+fi

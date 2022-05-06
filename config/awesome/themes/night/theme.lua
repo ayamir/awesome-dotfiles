@@ -15,7 +15,7 @@ local helpers = require("helpers")
 -- Aesthetic Night Theme
 ---------------------------
 
--- Rxyhn's Catppuccin Colorscheme
+-- Catppuccin Colorscheme
 local color_palette = {
 	rosewater = "#F5E0DC", -- Rosewater
 	flamingo = "#F2CDCD", -- Flamingo
@@ -29,16 +29,16 @@ local color_palette = {
 	blue = "#96CDFB", -- Blue
 	sky = "#89DCEB", -- Sky
 	teal = "#B5E8E0", -- Teal
-	lavender = "#C9CBFF", -- Lavender
-	white = "#c5c8c9",
-	black0 = "#0d1416",
-	black1 = "#111719",
-	black2 = "#131a1c",
-	black3 = "#192022",
-	black4 = "#202729",
-	gray0 = "#363D3E",
-	gray1 = "#4A5051",
-	gray2 = "#5C6262",
+	lavender = "#c9cbff", -- Lavender
+	white = "#d9e0ee",
+	black0 = "#161320",
+	black1 = "#1a1826",
+	black2 = "#1e1e2e",
+	black3 = "#302d41",
+	black4 = "#575268",
+	gray0 = "#6e6c7e",
+	gray1 = "#988ba2",
+	gray2 = "#c3bac6",
 }
 
 theme.xbackground = color_palette.black2
@@ -65,10 +65,10 @@ theme.dashboard_fg = color_palette.gray2
 theme.transparent = "#00000000"
 
 -- Wallpaper
-theme.wallpaper = gfs.get_configuration_dir() .. "themes/assets/night.jpg"
+theme.wallpaper = gfs.get_configuration_dir() .. "themes/assets/may.jpg"
 
 -- PFP
-theme.pfp = gears.surface.load_uncached(gfs.get_configuration_dir() .. "themes/assets/pfp.png")
+theme.pfp = gears.surface.load_uncached(gfs.get_configuration_dir() .. "themes/assets/ayanami.jpg")
 
 -- Awesome Logo
 theme.awesome_logo = gears.surface.load_uncached(gfs.get_configuration_dir() .. "icons/awesome_logo.svg")
@@ -115,7 +115,7 @@ theme.dashboard_radius = theme.border_radius
 theme.widget_radius = theme.border_radius
 
 -- Titlebars
-theme.titlebar_enabled = true
+theme.titlebar_enabled = false
 theme.titlebar_bg = theme.xbackground
 theme.titlebar_fg = theme.xforeground
 
@@ -283,6 +283,6 @@ theme.task_preview_widget_border_color = theme.widget_border_color
 theme.task_preview_widget_border_width = theme.widget_border_width * 0
 theme.task_preview_widget_margin = dpi(15)
 
-theme.fade_duration = 250
+theme.fade_duration = 150
 
 return theme

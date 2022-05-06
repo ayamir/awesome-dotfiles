@@ -195,7 +195,7 @@ awful.screen.connect_for_each_screen(function(s)
 	-- Clock
 	local clock = wibox.widget({
 		font = beautiful.font_name .. "Bold 12",
-		format = "%I:%M %p",
+		format = "%H:%M",
 		align = "center",
 		valign = "center",
 		widget = wibox.widget.textclock,
@@ -308,14 +308,13 @@ awful.screen.connect_for_each_screen(function(s)
 		type = "dock",
 		position = "top",
 		screen = s,
-		height = dpi(50),
-		width = s.geometry.width - dpi(40),
-		bg = beautiful.transparent,
+		height = dpi(45),
+		width = s.geometry.width - dpi(20),
 		ontop = true,
 		visible = true,
 	})
 
-	awful.placement.top(s.mywibar, { margins = beautiful.useless_gap * 3 })
+	awful.placement.top(s.mywibar, { margins = beautiful.useless_gap * 2 })
 
 	-- Remove wibar on full screen
 	local function remove_wibar(c)
@@ -334,51 +333,85 @@ awful.screen.connect_for_each_screen(function(s)
 	end
 
 	-- Hide bar when a splash widget is visible
-	awesome.connect_signal("widgets::splash::visibility", function(vis)
-		screen.primary.mywibar.visible = not vis
-	end)
-
-	client.connect_signal("property::fullscreen", remove_wibar)
-
-	client.connect_signal("request::unmanage", add_wibar)
+	-- awesome.connect_signal("widgets::splash::visibility", function(vis)
+	-- 	screen.primary.mywibar.visible = not vis
+	-- end)
+	--
+	-- client.connect_signal("property::fullscreen", remove_wibar)
+	--
+	-- client.connect_signal("request::unmanage", add_wibar)
 
 	-- Create the taglist widget
 	s.mytaglist = require("ui.bar.taglist")(s)
 
 	-- Add widgets to the wibox
-	s.mywibar:setup({
-		{
+	if s == screen[1] then
+		s.mywibar:setup({
 			{
-				layout = wibox.layout.align.horizontal,
-				expand = "none",
 				{
-					launcher,
-					nil,
-					search,
-					spacing = dpi(10),
-					layout = wibox.layout.fixed.horizontal,
+					layout = wibox.layout.align.horizontal,
+					expand = "none",
+					{
+						spacing = dpi(10),
+						layout = wibox.layout.fixed.horizontal,
+					},
+					{
+						widget = s.mytaglist,
+					},
+					{
+						batt_container,
+						right_container,
+						spacing = dpi(10),
+						layout = wibox.layout.fixed.horizontal,
+					},
 				},
-				{
-					widget = s.mytaglist,
-				},
-				{
-					batt_container,
-					right_container,
-					spacing = dpi(10),
-					layout = wibox.layout.fixed.horizontal,
-				},
+				margins = dpi(10),
+				widget = wibox.container.margin,
 			},
-			margins = dpi(10),
-			widget = wibox.container.margin,
-		},
-		bg = beautiful.wibar_bg,
-		shape = helpers.rrect(beautiful.border_radius),
-		widget = wibox.container.background,
-	})
+			bg = beautiful.wibar_bg,
+			shape = helpers.rrect(beautiful.border_radius),
+			widget = wibox.container.background,
+		})
+	else
+		s.mywibar:setup({
+			{
+				{
+					layout = wibox.layout.align.horizontal,
+					expand = "none",
+					{
+						launcher,
+						nil,
+						search,
+						spacing = dpi(10),
+						layout = wibox.layout.fixed.horizontal,
+					},
+					{
+						widget = s.mytaglist,
+					},
+					{
+						batt_container,
+						right_container,
+						spacing = dpi(10),
+						layout = wibox.layout.fixed.horizontal,
+					},
+				},
+				margins = dpi(10),
+				widget = wibox.container.margin,
+			},
+			bg = beautiful.wibar_bg,
+			shape = helpers.rrect(beautiful.border_radius),
+			widget = wibox.container.background,
+		})
+	end
 end)
 
 -- Systray toggle
 function systray_toggle()
 	local s = awful.screen.focused()
 	s.traybox.visible = not s.traybox.visible
+end
+
+function wibar_toggle()
+	local s = awful.screen.focused()
+	s.mywibar.visible = not s.mywibar.visible
 end

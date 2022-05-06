@@ -12,8 +12,21 @@ local helpers = require("helpers")
 
 -- Time
 ---------
-local hours = wibox.widget.textclock("%H")
-local minutes = wibox.widget.textclock("%M")
+local hours = wibox.widget({
+	font = beautiful.font_name .. "Bold 35",
+	align = "right",
+	format = "%H",
+	valign = "top",
+	widget = wibox.widget.textclock,
+})
+
+local minutes = wibox.widget({
+	font = beautiful.font_name .. "Bold 35",
+	align = "right",
+	format = "%M",
+	valign = "top",
+	widget = wibox.widget.textclock,
+})
 
 local make_little_dot = function(color)
 	return wibox.widget({
@@ -26,12 +39,7 @@ local make_little_dot = function(color)
 end
 
 local time = {
-	{
-		font = beautiful.font_name .. "Bold 44",
-		align = "right",
-		valign = "top",
-		widget = hours,
-	},
+	hours,
 	{
 		nil,
 		{
@@ -44,12 +52,7 @@ local time = {
 		expand = "none",
 		widget = wibox.layout.align.vertical,
 	},
-	{
-		font = beautiful.font_name .. "Bold 44",
-		align = "left",
-		valign = "top",
-		widget = minutes,
-	},
+	minutes,
 	spacing = dpi(20),
 	layout = wibox.layout.fixed.horizontal,
 }
