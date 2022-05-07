@@ -115,6 +115,7 @@ ruled.client.connect_signal("request::rules", function()
 			},
 			name = {
 				"Event Tester", -- xev
+				"图片查看",
 			},
 			role = {
 				"AlarmWindow",
@@ -196,8 +197,6 @@ ruled.client.connect_signal("request::rules", function()
 
 	-- App rules
 	ruled.client.append_rule({ rule = { class = "firefox" }, properties = { screen = 1, tag = tag1 } })
-	ruled.client.append_rule({ rule = { instance = "Devtools" }, properties = { screen = 2, tag = tag1 } })
-	ruled.client.append_rule({ rule = { class = "obsidian" }, properties = { screen = 2, tag = tag1 } })
 
 	ruled.client.append_rule({ rule = { class = "jetbrains-webstorm" }, properties = { screen = 1, tag = tag2 } })
 	ruled.client.append_rule({ rule = { class = "jetbrains-pycharm" }, properties = { screen = 1, tag = tag2 } })
@@ -208,22 +207,41 @@ ruled.client.connect_signal("request::rules", function()
 		rule = { class = "electron-netease-cloud-music" },
 		properties = { screen = 1, tag = tag4 },
 	})
-	ruled.client.append_rule({ rule = { instance = "ncmpcpp" }, properties = { screen = 2, tag = tag4 } })
-	ruled.client.append_rule({ rule = { class = "yesplaymusic" }, properties = { screen = 2, tag = tag4 } })
-
-	ruled.client.append_rule({ rule = { class = "Steam" }, properties = { screen = 2, tag = tag5 } })
 
 	ruled.client.append_rule({ rule = { class = "icalingua" }, properties = { screen = 1, tag = tag6 } })
 	ruled.client.append_rule({ rule = { class = "Wine" }, properties = { screen = 1, tag = tag6 } })
 	ruled.client.append_rule({ rule = { class = "wechat.exe" }, properties = { screen = 1, tag = tag6 } })
-	ruled.client.append_rule({ rule = { class = "discord" }, properties = { screen = 2, tag = tag6 } })
-	ruled.client.append_rule({ rule = { class = "TelegramDesktop" }, properties = { screen = 2, tag = tag6 } })
 
 	ruled.client.append_rule({ rule = { class = "Solaar" }, properties = { screen = 1, tag = tag7 } })
 	ruled.client.append_rule({ rule = { class = "qBittorrent" }, properties = { screen = 1, tag = tag7 } })
-	ruled.client.append_rule({ rule = { class = "Clash for Windows" }, properties = { screen = 2, tag = tag7 } })
 
 	ruled.client.append_rule({ rule = { class = "Joplin" }, properties = { screen = 1, tag = tag8 } })
+
+	if screen[2] ~= nil then
+		ruled.client.append_rule({ rule = { instance = "Devtools" }, properties = { screen = 2, tag = tag1 } })
+		ruled.client.append_rule({ rule = { class = "obsidian" }, properties = { screen = 2, tag = tag1 } })
+		ruled.client.append_rule({ rule = { instance = "ncmpcpp" }, properties = { screen = 2, tag = tag4 } })
+		ruled.client.append_rule({ rule = { class = "yesplaymusic" }, properties = { screen = 2, tag = tag4 } })
+
+		ruled.client.append_rule({ rule = { class = "Steam" }, properties = { screen = 2, tag = tag5 } })
+
+		ruled.client.append_rule({ rule = { class = "discord" }, properties = { screen = 2, tag = tag6 } })
+		ruled.client.append_rule({ rule = { class = "TelegramDesktop" }, properties = { screen = 2, tag = tag6 } })
+
+		ruled.client.append_rule({ rule = { class = "Clash for Windows" }, properties = { screen = 2, tag = tag7 } })
+	else
+		ruled.client.append_rule({ rule = { instance = "Devtools" }, properties = { screen = 1, tag = tag1 } })
+		ruled.client.append_rule({ rule = { class = "obsidian" }, properties = { screen = 1, tag = tag1 } })
+		ruled.client.append_rule({ rule = { instance = "ncmpcpp" }, properties = { screen = 1, tag = tag4 } })
+		ruled.client.append_rule({ rule = { class = "yesplaymusic" }, properties = { screen = 1, tag = tag4 } })
+
+		ruled.client.append_rule({ rule = { class = "Steam" }, properties = { screen = 1, tag = tag5 } })
+
+		ruled.client.append_rule({ rule = { class = "discord" }, properties = { screen = 1, tag = tag6 } })
+		ruled.client.append_rule({ rule = { class = "TelegramDesktop" }, properties = { screen = 1, tag = tag6 } })
+
+		ruled.client.append_rule({ rule = { class = "Clash for Windows" }, properties = { screen = 1, tag = tag7 } })
+	end
 end)
 
 -- Standard awesome library
