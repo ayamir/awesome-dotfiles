@@ -11,96 +11,6 @@ awful.screen.connect_for_each_screen(function(s)
 		resize = true,
 	})
 
-	local launcher = wibox.widget({
-		{
-			awesome_icon,
-			top = dpi(6),
-			bottom = dpi(6),
-			left = dpi(12),
-			right = dpi(12),
-			widget = wibox.container.margin,
-		},
-		shape = function(cr, width, height)
-			gears.shape.rounded_rect(cr, width, height, dpi(5))
-		end,
-		bg = beautiful.wibar_widget_bg,
-		widget = wibox.container.background,
-	})
-
-	launcher:buttons(gears.table.join(awful.button({}, 1, function()
-		central_panel:toggle()
-	end)))
-
-	helpers.add_hover_cursor(awesome_icon, "hand2")
-
-	local search_icon = wibox.widget({
-		font = "icomoon bold 14",
-		align = "center",
-		valign = "center",
-		widget = wibox.widget.textbox(),
-	})
-
-	local reset_search_icon = function()
-		search_icon.markup = helpers.colorize_text("", beautiful.accent)
-	end
-	reset_search_icon()
-
-	local search_text = wibox.widget({
-		markup = helpers.colorize_text("Search", beautiful.xcolor8),
-		align = "center",
-		valign = "center",
-		font = beautiful.prompt_font,
-		widget = wibox.widget.textbox(),
-	})
-
-	local search = wibox.widget({
-		{
-			{
-				search_icon,
-				search_text,
-				spacing = dpi(10),
-				layout = wibox.layout.fixed.horizontal,
-			},
-			left = dpi(15),
-			widget = wibox.container.margin,
-		},
-		forced_height = dpi(35),
-		forced_width = dpi(200),
-		shape = function(cr, width, height)
-			gears.shape.rounded_rect(cr, width, height, dpi(5))
-		end,
-		bg = beautiful.wibar_widget_bg,
-		widget = wibox.container.background,
-	})
-
-	local function generate_prompt_icon(icon, color)
-		return "<span font='icomoon 14' foreground='" .. color .. "'>" .. icon .. "</span> "
-	end
-
-	function activate_prompt(action)
-		search_icon.visible = false
-		local prompt
-		if action == "run" then
-			prompt = generate_prompt_icon("", beautiful.accent)
-		elseif action == "web_search" then
-			prompt = generate_prompt_icon("", beautiful.accent)
-		end
-		helpers.prompt(action, search_text, prompt, function()
-			search_icon.visible = true
-		end)
-	end
-
-	search:buttons(gears.table.join(
-		awful.button({}, 1, function()
-			activate_prompt("run")
-		end),
-		awful.button({}, 3, function()
-			activate_prompt("web_search")
-		end)
-	))
-
-	helpers.add_hover_cursor(search, "hand2")
-
 	-- battery
 	local charge_icon = wibox.widget({
 		markup = helpers.colorize_text("", beautiful.xbackground .. "80"),
@@ -310,6 +220,7 @@ awful.screen.connect_for_each_screen(function(s)
 		screen = s,
 		height = dpi(45),
 		width = s.geometry.width - dpi(20),
+		bg = beautiful.transparent,
 		ontop = true,
 		visible = true,
 	})
@@ -333,76 +244,50 @@ awful.screen.connect_for_each_screen(function(s)
 	end
 
 	-- Hide bar when a splash widget is visible
-	-- awesome.connect_signal("widgets::splash::visibility", function(vis)
-	-- 	screen.primary.mywibar.visible = not vis
-	-- end)
-	--
-	-- client.connect_signal("property::fullscreen", remove_wibar)
-	--
-	-- client.connect_signal("request::unmanage", add_wibar)
+	awesome.connect_signal("widgets::splash::visibility", function(vis)
+		screen.primary.mywibar.visible = not vis
+	end)
+
+	client.connect_signal("property::fullscreen", remove_wibar)
+
+	client.connect_signal("request::unmanage", add_wibar)
 
 	-- Create the taglist widget
 	s.mytaglist = require("ui.bar.taglist")(s)
 
+	s.mytasklist = awful.widget.tasklist({
+		screen = s,
+		filter = awful.widget.tasklist.filter.currenttags,
+	})
+
 	-- Add widgets to the wibox
-	if s == screen[1] then
-		s.mywibar:setup({
+	s.mywibar:setup({
+		{
 			{
+				layout = wibox.layout.align.horizontal,
+				expand = "none",
 				{
-					layout = wibox.layout.align.horizontal,
-					expand = "none",
-					{
-						spacing = dpi(10),
-						layout = wibox.layout.fixed.horizontal,
-					},
-					{
-						widget = s.mytaglist,
-					},
-					{
-						batt_container,
-						right_container,
-						spacing = dpi(10),
-						layout = wibox.layout.fixed.horizontal,
-					},
+					s.mytasklist,
+					spacing = dpi(10),
+					layout = wibox.layout.fixed.horizontal,
 				},
-				margins = dpi(10),
-				widget = wibox.container.margin,
-			},
-			bg = beautiful.wibar_bg,
-			shape = helpers.rrect(beautiful.border_radius),
-			widget = wibox.container.background,
-		})
-	else
-		s.mywibar:setup({
-			{
 				{
-					layout = wibox.layout.align.horizontal,
-					expand = "none",
-					{
-						launcher,
-						nil,
-						search,
-						spacing = dpi(10),
-						layout = wibox.layout.fixed.horizontal,
-					},
-					{
-						widget = s.mytaglist,
-					},
-					{
-						batt_container,
-						right_container,
-						spacing = dpi(10),
-						layout = wibox.layout.fixed.horizontal,
-					},
+					widget = s.mytaglist,
 				},
-				margins = dpi(10),
-				widget = wibox.container.margin,
+				{
+					batt_container,
+					right_container,
+					spacing = dpi(10),
+					layout = wibox.layout.fixed.horizontal,
+				},
 			},
-			bg = beautiful.wibar_bg,
-			shape = helpers.rrect(beautiful.border_radius),
-			widget = wibox.container.background,
-		})
-	end
+			margins = dpi(10),
+			widget = wibox.container.margin,
+		},
+		bg = beautiful.wibar_bg,
+		shape = helpers.rrect(beautiful.border_radius),
+		widget = wibox.container.background,
+	})
 end)
 
 -- Systray toggle

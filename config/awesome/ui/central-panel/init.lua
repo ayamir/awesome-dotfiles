@@ -37,7 +37,7 @@ awful.screen.connect_for_each_screen(function(s)
 		ontop = true,
 		visible = false,
 	})
-	local anim_length = 0.7
+	local anim_length = 0.5
 	-- Gears Timer so awestore_compat can go
 	local slide_end = gears.timer({
 		single_shot = true,
